@@ -47,6 +47,7 @@ app.get("/update", async (req, res) => {
             🚨 @${process.env.USERNAME}`)
         }
     }
+    return res.send("ok")
 })
 
 app.listen(3000)
