@@ -30,7 +30,7 @@ app.get("/update", async (req, res) => {
     const data = extractImportantData(response.data);
     const now = new Date();
     if (now - data.time < 1000 * 60 * 10) {
-        if (data.magnitude > 4) {
+        if (data.magnitude > Number(process.env.LIMIT)) {
             bot.telegram.sendMessage(
                 process.env.USERNAME,
                 "🌍 New Earthquake Alert! 🌍\n\n"
