@@ -29,22 +29,20 @@ app.get("/update", async (req, res) => {
     const response = await axios.get('https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_hour.geojson');
     const data = extractImportantData(response.data);
     const now = new Date();
-    if(now - data.time < 1000 * 60 * 10){
-        if(data.magnitude > 0){
+    if (now - data.time < 1000 * 60 * 10) {
+        if (data.magnitude > 4) {
             bot.telegram.sendMessage(
-            process.env.USERNAME,     
-            `🌍 New Earthquake Alert! 🌍
-
-            Magnitude: ${data.magnitude} Richter
-            📍 Location: ${data.place}
-            🕒 Time: ${data.time}
-            🔍 Details: ${data.url}
-            📊 Status: ${data.status}
-            🌊 Tsunami: ${data.tsunami === 0 ? 'No' : 'Yes'}
-            🔖 Title: ${data.title}
-            
-            Stay Safe and Be Prepared! 🌏
-            🚨 @${process.env.USERNAME}`)
+                process.env.USERNAME,
+                "🌍 New Earthquake Alert! 🌍\n\n"
+                + "Magnitude: " + data.magnitude + " Richter\n"
+                + "📍 Location: " + data.place + "\n"
+                + "🕒 Time: " + data.time + "\n"
+                + "🔍 Details: <a href=\"" + data.url + "\">link</a>\n"
+                + "📊 Status: " + data.status + "\n"
+                + "🌊 Tsunami: " + (data.tsunami === 0 ? 'No' : 'Yes') + "\n"
+                + "🔖 Title: <code>" + data.title + "</code>\n\n"
+                + "Stay Safe and Be Prepared! 🌏\n"
+                + "🚨 " + process.env.USERNAME, {parse_mode: "HTML"})
         }
     }
     return res.send("ok")
